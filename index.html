@@ -2,15 +2,15 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Конфигуратор огнестойкой пены — несколько полостей</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>FIREFORT EI240 — Калькулятор расхода огнестойкой пены</title>
     <style>
         * {
             box-sizing: border-box;
-            font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
+            font-family: system-ui, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
         }
         body {
-            background: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%);
+            background: linear-gradient(135deg, #f5f7fc 0%, #e9eef5 100%);
             margin: 0;
             min-height: 100vh;
             display: flex;
@@ -19,197 +19,251 @@
             padding: 20px;
         }
         .card {
-            max-width: 720px;
+            max-width: 750px;
             width: 100%;
             background: white;
-            border-radius: 32px;
-            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.2);
+            border-radius: 36px;
+            box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.25);
             overflow: hidden;
+            transition: all 0.2s;
         }
         .header {
-            background: #c62828;
+            background: #b71c1c;
+            background: linear-gradient(135deg, #b71c1c 0%, #d32f2f 100%);
             color: white;
-            padding: 24px 28px;
+            padding: 28px 28px 24px;
         }
         .header h1 {
-            margin: 0 0 8px;
-            font-size: 1.8rem;
+            margin: 0 0 6px;
+            font-size: 1.7rem;
+            font-weight: 700;
+            letter-spacing: -0.3px;
         }
-        .badge {
-            background: #ffb74d;
-            color: #3e2723;
-            padding: 4px 12px;
-            border-radius: 40px;
-            font-size: 0.75rem;
-            font-weight: bold;
+        .header h1 span {
+            font-weight: 400;
+            font-size: 1.3rem;
+        }
+        .header p {
+            margin: 8px 0 0;
+            opacity: 0.9;
+            font-size: 0.85rem;
+        }
+        .brand {
             display: inline-block;
-            margin-top: 12px;
+            background: #ff8f00;
+            color: #1e1b0f;
+            font-weight: 800;
+            padding: 5px 14px;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            margin-top: 14px;
+            letter-spacing: 0.5px;
         }
         .content {
-            padding: 24px 28px 32px;
+            padding: 26px 28px 32px;
         }
         .param-group {
-            background: #f8fafc;
-            border-radius: 24px;
-            padding: 18px 20px;
+            background: #f9fafc;
+            border-radius: 26px;
+            padding: 20px 22px;
             margin-bottom: 24px;
-            border: 1px solid #e2e8f0;
+            border: 1px solid #e6edf4;
+        }
+        .param-title {
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 18px;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-left: 4px solid #d32f2f;
+            padding-left: 14px;
         }
         .input-row {
             display: flex;
             flex-wrap: wrap;
-            gap: 16px;
-            margin-bottom: 16px;
+            gap: 18px;
+            margin-bottom: 20px;
         }
         .input-field {
             flex: 1;
-            min-width: 100px;
+            min-width: 110px;
         }
         .input-field label {
-            font-size: 0.7rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            color: #475569;
             display: block;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #5b6e8c;
             margin-bottom: 6px;
         }
         .input-field input {
             width: 100%;
-            padding: 10px 12px;
-            border: 1px solid #cbd5e1;
-            border-radius: 16px;
+            padding: 12px 14px;
             font-size: 1rem;
+            border: 1.5px solid #dce3ec;
+            border-radius: 20px;
+            background: white;
+            transition: 0.2s;
+            font-weight: 500;
         }
         .input-field input:focus {
             outline: none;
-            border-color: #c62828;
-            box-shadow: 0 0 0 3px rgba(198,40,40,0.2);
+            border-color: #d32f2f;
+            box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.15);
         }
-        .unit {
+        .unit-badge {
             font-size: 0.7rem;
-            color: #64748b;
-            margin-top: 4px;
+            color: #5f7f9e;
+            margin-top: 6px;
+            font-weight: 500;
         }
-        .info-block {
+        .info-panel {
             background: white;
-            border-radius: 20px;
-            padding: 12px 16px;
-            margin: 16px 0;
+            border-radius: 22px;
+            padding: 14px 18px;
+            margin: 18px 0 20px;
             border: 1px solid #e2e8f0;
             display: flex;
-            justify-content: space-between;
             flex-wrap: wrap;
+            justify-content: space-between;
             gap: 12px;
         }
         .info-item {
             flex: 1;
+            text-align: center;
         }
         .info-label {
-            font-size: 0.7rem;
-            color: #334155;
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: #5f7f9e;
+            text-transform: uppercase;
         }
         .info-value {
-            font-weight: 700;
+            font-weight: 800;
             font-size: 1.2rem;
             color: #0f172a;
         }
-        .result {
-            background: #1e293b;
+        .result-block {
+            background: #0f172a;
             border-radius: 28px;
-            padding: 20px 24px;
-            margin: 24px 0 20px;
+            padding: 22px 24px;
+            margin: 20px 0 20px;
             color: white;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+        .result-label {
+            font-size: 0.75rem;
+            opacity: 0.7;
+            letter-spacing: 1px;
         }
         .result-number {
-            font-size: 3rem;
+            font-size: 3.2rem;
             font-weight: 800;
-            line-height: 1;
-            margin: 8px 0;
+            line-height: 1.1;
+            margin: 10px 0 8px;
         }
-        .detail {
+        .result-number small {
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+        .detail-line {
             display: flex;
             justify-content: space-between;
-            border-top: 1px solid #334155;
+            border-top: 1px solid #1e2a44;
+            padding-top: 12px;
             margin-top: 12px;
-            padding-top: 10px;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
         }
-        button {
-            background: #c62828;
-            width: 100%;
-            padding: 14px;
+        .calc-btn {
+            background: #d32f2f;
             border: none;
-            border-radius: 40px;
-            font-weight: bold;
+            padding: 15px 18px;
+            width: 100%;
+            border-radius: 44px;
+            font-weight: 700;
             font-size: 1rem;
             color: white;
             cursor: pointer;
             transition: 0.2s;
+            margin: 8px 0 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
-        button:hover {
+        .calc-btn:hover {
             background: #b71c1c;
             transform: scale(0.98);
         }
-        .warning {
-            background: #fff7e5;
+        .warning-note {
+            background: #fffbeb;
             border-left: 4px solid #f59e0b;
             padding: 12px 16px;
-            border-radius: 16px;
-            font-size: 0.75rem;
-            margin-top: 20px;
+            border-radius: 18px;
+            font-size: 0.72rem;
             color: #92400e;
+            margin-top: 20px;
         }
         hr {
-            margin: 16px 0;
+            margin: 20px 0 8px;
             border: none;
-            border-top: 1px solid #e2e8f0;
+            border-top: 1px solid #e9eef3;
         }
-        .highlight {
-            background: #e6f0ff;
-            border-radius: 16px;
-            padding: 4px 10px;
-            font-weight: bold;
+        .footer-note {
+            font-size: 0.7rem;
+            text-align: center;
+            color: #7e8aa2;
+        }
+        @media (max-width: 550px) {
+            .content {
+                padding: 20px;
+            }
+            .result-number {
+                font-size: 2.4rem;
+            }
         }
     </style>
 </head>
 <body>
 <div class="card">
     <div class="header">
-        <h1>🔥 Огнестойкая пена</h1>
-        <p>Расчёт баллонов (750 мл) — выход <strong>45 литров</strong> готовой пены</p>
-        <div class="badge">⚙️ Техпотери 5% | 🛡️ Запас 15%</div>
+        <h1>🔥 FIREFORT <span>EI240</span></h1>
+        <p>Огнестойкая профессиональная монтажная пена</p>
+        <div class="brand">Предел огнестойкости EI 240 | 240 минут</div>
     </div>
     <div class="content">
         <div class="param-group">
-            <div style="font-weight: 600; margin-bottom: 16px;">📐 Размеры ОДНОЙ полости / трещины</div>
+            <div class="param-title">📏 Размеры ОДНОЙ полости / трещины</div>
             <div class="input-row">
                 <div class="input-field">
                     <label>Длина (L)</label>
-                    <input type="number" id="length" value="0.5" step="0.01">
-                    <div class="unit">метры</div>
+                    <input type="number" id="length" value="7000" step="1" placeholder="мм">
+                    <div class="unit-badge">мм</div>
                 </div>
                 <div class="input-field">
                     <label>Ширина (W)</label>
-                    <input type="number" id="width" value="0.02" step="0.001">
-                    <div class="unit">метры</div>
+                    <input type="number" id="width" value="200" step="1" placeholder="мм">
+                    <div class="unit-badge">мм</div>
                 </div>
                 <div class="input-field">
                     <label>Глубина (H)</label>
-                    <input type="number" id="height" value="0.03" step="0.001">
-                    <div class="unit">метры</div>
+                    <input type="number" id="height" value="500" step="1" placeholder="мм">
+                    <div class="unit-badge">мм</div>
                 </div>
             </div>
             <div class="input-row">
                 <div class="input-field">
-                    <label>📌 Количество таких же полостей</label>
-                    <input type="number" id="cavityCount" value="1" step="1" min="1">
-                    <div class="unit">штук (одинаковых)</div>
+                    <label>🔢 Количество таких же полостей</label>
+                    <input type="number" id="cavityCount" value="1" step="1" min="1" placeholder="шт">
+                    <div class="unit-badge">штук</div>
                 </div>
             </div>
-            <div style="font-size: 0.7rem; margin-top: 10px; color: #555;">📌 1 см = 0.01 м · 10 см = 0.1 м</div>
+            <div style="font-size: 0.7rem; background:#eef2ff; padding: 6px 12px; border-radius: 30px; margin-top: 6px;">
+                💡 Введите размеры в миллиметрах (мм). 1 м = 1000 мм
+            </div>
         </div>
 
-        <div class="info-block">
+        <div class="info-panel">
             <div class="info-item">
                 <div class="info-label">📦 Баллон</div>
                 <div class="info-value">750 мл</div>
@@ -228,87 +282,94 @@
             </div>
         </div>
 
-        <div class="result">
-            <div style="opacity:0.8; font-size:0.8rem;">🧨 ТРЕБУЕТСЯ БАЛЛОНОВ (ВСЕГО)</div>
+        <div class="result-block">
+            <div class="result-label">🧨 ТРЕБУЕТСЯ БАЛЛОНОВ FIREFORT EI240</div>
             <div class="result-number" id="balloonCount">—</div>
-            <div class="detail">
+            <div class="detail-line">
                 <span>📐 Объём 1 полости:</span>
                 <span id="singleVol">—</span>
             </div>
-            <div class="detail">
+            <div class="detail-line">
                 <span>🔢 Суммарный объём (всех <span id="countDisplay">—</span> полостей):</span>
                 <span id="totalVolGeom">—</span>
             </div>
-            <div class="detail">
-                <span>➕ Требуется пены (с запасом 15%):</span>
+            <div class="detail-line">
+                <span>➕ Пены с запасом (тех.5% + резерв15%):</span>
                 <span id="requiredVol">—</span>
             </div>
-            <div class="detail">
-                <span>🧴 Полезный выход с 1 баллона (с учётом 5% потерь):</span>
-                <span>42,75 л</span>
+            <div class="detail-line">
+                <span>🧴 Полезный выход 1 баллона (с учётом 5% потерь):</span>
+                <span>42,75 литра</span>
             </div>
         </div>
 
-        <button id="calcBtn">⟳ Пересчитать</button>
-        <div class="warning">
-            ⚠️ Выход 45 литров — это объём уже расширенной пены из одного баллона. <br>
-            Вычитаем 5% техпотерь → 42,75 л полезного объёма с баллона. Затем добавляем 15% запаса к суммарному объёму полостей.
+        <button class="calc-btn" id="calcBtn">⟳ РАССЧИТАТЬ</button>
+
+        <div class="warning-note">
+            🔥 <strong>FIREFORT EI240</strong> — огнестойкая пена с пределом огнестойкости 240 минут. <br>
+            Расчёт выполнен: выход готовой пены 45 л/баллон, технические потери 5%, эксплуатационный запас 15%. Округление до целого баллона вверх.
         </div>
         <hr>
-        <div style="font-size:0.7rem; text-align:center;">Формула: N = ceil( (V<sub>одной полости</sub> × кол-во) × 1,15 / 42,75 )</div>
+        <div class="footer-note">
+            Формула: N = ceil( V<sub>сумм</sub> (литры) × 1,15 / 42,75 )
+        </div>
     </div>
 </div>
 
 <script>
-    const OUTPUT_LITERS_PER_CAN = 45;        // литров готовой пены с баллона
-    const TECH_LOSS_PERCENT = 0.05;           // 5% техпотерь
-    const EXTRA_RESERVE = 0.15;               // 15% запас
-    
-    const USABLE_LITERS_PER_CAN = OUTPUT_LITERS_PER_CAN * (1 - TECH_LOSS_PERCENT); // 42.75 л
-    
+    const OUTPUT_LITERS_PER_CAN = 45;
+    const TECH_LOSS_PERCENT = 0.05;
+    const EXTRA_RESERVE = 0.15;
+    const USABLE_LITERS_PER_CAN = OUTPUT_LITERS_PER_CAN * (1 - TECH_LOSS_PERCENT);
+
     function calculate() {
-        let L = parseFloat(document.getElementById('length').value) || 0;
-        let W = parseFloat(document.getElementById('width').value) || 0;
-        let H = parseFloat(document.getElementById('height').value) || 0;
+        let L_mm = parseFloat(document.getElementById('length').value) || 0;
+        let W_mm = parseFloat(document.getElementById('width').value) || 0;
+        let H_mm = parseFloat(document.getElementById('height').value) || 0;
         let count = parseInt(document.getElementById('cavityCount').value) || 1;
-        
+
         if (count < 1) count = 1;
-        
-        L = Math.max(0, L);
-        W = Math.max(0, W);
-        H = Math.max(0, H);
-        
-        const volumeSingleM3 = L * W * H;
+        L_mm = Math.max(0, L_mm);
+        W_mm = Math.max(0, W_mm);
+        H_mm = Math.max(0, H_mm);
+
+        const L_m = L_mm / 1000;
+        const W_m = W_mm / 1000;
+        const H_m = H_mm / 1000;
+
+        const volumeSingleM3 = L_m * W_m * H_m;
         const volumeSingleLiters = volumeSingleM3 * 1000;
-        
         const totalVolumeLiters = volumeSingleLiters * count;
-        
         const requiredWithReserve = totalVolumeLiters * (1 + EXTRA_RESERVE);
-        
+
         let balloons = 0;
         if (requiredWithReserve > 0 && USABLE_LITERS_PER_CAN > 0) {
             balloons = Math.ceil(requiredWithReserve / USABLE_LITERS_PER_CAN);
         }
-        
-        // отображение
-        document.getElementById('singleVol').innerHTML = volumeSingleLiters.toFixed(4) + ' л (' + volumeSingleM3.toFixed(6) + ' м³)';
-        document.getElementById('totalVolGeom').innerHTML = totalVolumeLiters.toFixed(2) + ' л (' + (totalVolumeLiters / 1000).toFixed(6) + ' м³)';
-        document.getElementById('requiredVol').innerHTML = requiredWithReserve.toFixed(2) + ' л';
+
+        function formatLiters(liters) {
+            if (liters < 0.01) return liters.toFixed(4) + ' л';
+            if (liters < 1) return liters.toFixed(3) + ' л';
+            if (liters < 100) return liters.toFixed(1) + ' л';
+            return Math.round(liters) + ' л';
+        }
+
+        document.getElementById('singleVol').innerHTML = formatLiters(volumeSingleLiters) + ' (' + volumeSingleM3.toFixed(5) + ' м³)';
+        document.getElementById('totalVolGeom').innerHTML = formatLiters(totalVolumeLiters) + ' (' + (totalVolumeLiters / 1000).toFixed(5) + ' м³)';
+        document.getElementById('requiredVol').innerHTML = formatLiters(requiredWithReserve);
         document.getElementById('countDisplay').innerHTML = count;
-        
+
         if (totalVolumeLiters === 0) {
-            document.getElementById('balloonCount').innerHTML = '0 <span style="font-size:1rem;">(нет пустот)</span>';
+            document.getElementById('balloonCount').innerHTML = '0 <small>шт.</small>';
         } else {
-            document.getElementById('balloonCount').innerHTML = balloons + ' <span style="font-size:1rem;">шт.</span>';
+            document.getElementById('balloonCount').innerHTML = balloons + ' <small>баллонов</small>';
         }
     }
-    
-    const inputs = ['length', 'width', 'height', 'cavityCount'];
-    inputs.forEach(id => {
+
+    ['length', 'width', 'height', 'cavityCount'].forEach(id => {
         document.getElementById(id).addEventListener('input', calculate);
     });
     document.getElementById('calcBtn').addEventListener('click', calculate);
-    
     calculate();
 </script>
 </body>
