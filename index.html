@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Конфигуратор огнестойкой пены — несколько полостей</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%);
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .card {
+            max-width: 720px;
+            width: 100%;
+            background: white;
+            border-radius: 32px;
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        .header {
+            background: #c62828;
+            color: white;
+            padding: 24px 28px;
+        }
+        .header h1 {
+            margin: 0 0 8px;
+            font-size: 1.8rem;
+        }
+        .badge {
+            background: #ffb74d;
+            color: #3e2723;
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 12px;
+        }
+        .content {
+            padding: 24px 28px 32px;
+        }
+        .param-group {
+            background: #f8fafc;
+            border-radius: 24px;
+            padding: 18px 20px;
+            margin-bottom: 24px;
+            border: 1px solid #e2e8f0;
+        }
+        .input-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        .input-field {
+            flex: 1;
+            min-width: 100px;
+        }
+        .input-field label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #475569;
+            display: block;
+            margin-bottom: 6px;
+        }
+        .input-field input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 16px;
+            font-size: 1rem;
+        }
+        .input-field input:focus {
+            outline: none;
+            border-color: #c62828;
+            box-shadow: 0 0 0 3px rgba(198,40,40,0.2);
+        }
+        .unit {
+            font-size: 0.7rem;
+            color: #64748b;
+            margin-top: 4px;
+        }
+        .info-block {
+            background: white;
+            border-radius: 20px;
+            padding: 12px 16px;
+            margin: 16px 0;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .info-item {
+            flex: 1;
+        }
+        .info-label {
+            font-size: 0.7rem;
+            color: #334155;
+        }
+        .info-value {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #0f172a;
+        }
+        .result {
+            background: #1e293b;
+            border-radius: 28px;
+            padding: 20px 24px;
+            margin: 24px 0 20px;
+            color: white;
+        }
+        .result-number {
+            font-size: 3rem;
+            font-weight: 800;
+            line-height: 1;
+            margin: 8px 0;
+        }
+        .detail {
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid #334155;
+            margin-top: 12px;
+            padding-top: 10px;
+            font-size: 0.85rem;
+        }
+        button {
+            background: #c62828;
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 40px;
+            font-weight: bold;
+            font-size: 1rem;
+            color: white;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        button:hover {
+            background: #b71c1c;
+            transform: scale(0.98);
+        }
+        .warning {
+            background: #fff7e5;
+            border-left: 4px solid #f59e0b;
+            padding: 12px 16px;
+            border-radius: 16px;
+            font-size: 0.75rem;
+            margin-top: 20px;
+            color: #92400e;
+        }
+        hr {
+            margin: 16px 0;
+            border: none;
+            border-top: 1px solid #e2e8f0;
+        }
+        .highlight {
+            background: #e6f0ff;
+            border-radius: 16px;
+            padding: 4px 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div class="card">
+    <div class="header">
+        <h1>🔥 Огнестойкая пена</h1>
+        <p>Расчёт баллонов (750 мл) — выход <strong>45 литров</strong> готовой пены</p>
+        <div class="badge">⚙️ Техпотери 5% | 🛡️ Запас 15%</div>
+    </div>
+    <div class="content">
+        <div class="param-group">
+            <div style="font-weight: 600; margin-bottom: 16px;">📐 Размеры ОДНОЙ полости / трещины</div>
+            <div class="input-row">
+                <div class="input-field">
+                    <label>Длина (L)</label>
+                    <input type="number" id="length" value="0.5" step="0.01">
+                    <div class="unit">метры</div>
+                </div>
+                <div class="input-field">
+                    <label>Ширина (W)</label>
+                    <input type="number" id="width" value="0.02" step="0.001">
+                    <div class="unit">метры</div>
+                </div>
+                <div class="input-field">
+                    <label>Глубина (H)</label>
+                    <input type="number" id="height" value="0.03" step="0.001">
+                    <div class="unit">метры</div>
+                </div>
+            </div>
+            <div class="input-row">
+                <div class="input-field">
+                    <label>📌 Количество таких же полостей</label>
+                    <input type="number" id="cavityCount" value="1" step="1" min="1">
+                    <div class="unit">штук (одинаковых)</div>
+                </div>
+            </div>
+            <div style="font-size: 0.7rem; margin-top: 10px; color: #555;">📌 1 см = 0.01 м · 10 см = 0.1 м</div>
+        </div>
+
+        <div class="info-block">
+            <div class="info-item">
+                <div class="info-label">📦 Баллон</div>
+                <div class="info-value">750 мл</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">💨 Выход пены</div>
+                <div class="info-value">45 литров</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">⚙️ Техпотери</div>
+                <div class="info-value">5%</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">🛡️ Запас</div>
+                <div class="info-value">15%</div>
+            </div>
+        </div>
+
+        <div class="result">
+            <div style="opacity:0.8; font-size:0.8rem;">🧨 ТРЕБУЕТСЯ БАЛЛОНОВ (ВСЕГО)</div>
+            <div class="result-number" id="balloonCount">—</div>
+            <div class="detail">
+                <span>📐 Объём 1 полости:</span>
+                <span id="singleVol">—</span>
+            </div>
+            <div class="detail">
+                <span>🔢 Суммарный объём (всех <span id="countDisplay">—</span> полостей):</span>
+                <span id="totalVolGeom">—</span>
+            </div>
+            <div class="detail">
+                <span>➕ Требуется пены (с запасом 15%):</span>
+                <span id="requiredVol">—</span>
+            </div>
+            <div class="detail">
+                <span>🧴 Полезный выход с 1 баллона (с учётом 5% потерь):</span>
+                <span>42,75 л</span>
+            </div>
+        </div>
+
+        <button id="calcBtn">⟳ Пересчитать</button>
+        <div class="warning">
+            ⚠️ Выход 45 литров — это объём уже расширенной пены из одного баллона. <br>
+            Вычитаем 5% техпотерь → 42,75 л полезного объёма с баллона. Затем добавляем 15% запаса к суммарному объёму полостей.
+        </div>
+        <hr>
+        <div style="font-size:0.7rem; text-align:center;">Формула: N = ceil( (V<sub>одной полости</sub> × кол-во) × 1,15 / 42,75 )</div>
+    </div>
+</div>
+
+<script>
+    const OUTPUT_LITERS_PER_CAN = 45;        // литров готовой пены с баллона
+    const TECH_LOSS_PERCENT = 0.05;           // 5% техпотерь
+    const EXTRA_RESERVE = 0.15;               // 15% запас
+    
+    const USABLE_LITERS_PER_CAN = OUTPUT_LITERS_PER_CAN * (1 - TECH_LOSS_PERCENT); // 42.75 л
+    
+    function calculate() {
+        let L = parseFloat(document.getElementById('length').value) || 0;
+        let W = parseFloat(document.getElementById('width').value) || 0;
+        let H = parseFloat(document.getElementById('height').value) || 0;
+        let count = parseInt(document.getElementById('cavityCount').value) || 1;
+        
+        if (count < 1) count = 1;
+        
+        L = Math.max(0, L);
+        W = Math.max(0, W);
+        H = Math.max(0, H);
+        
+        const volumeSingleM3 = L * W * H;
+        const volumeSingleLiters = volumeSingleM3 * 1000;
+        
+        const totalVolumeLiters = volumeSingleLiters * count;
+        
+        const requiredWithReserve = totalVolumeLiters * (1 + EXTRA_RESERVE);
+        
+        let balloons = 0;
+        if (requiredWithReserve > 0 && USABLE_LITERS_PER_CAN > 0) {
+            balloons = Math.ceil(requiredWithReserve / USABLE_LITERS_PER_CAN);
+        }
+        
+        // отображение
+        document.getElementById('singleVol').innerHTML = volumeSingleLiters.toFixed(4) + ' л (' + volumeSingleM3.toFixed(6) + ' м³)';
+        document.getElementById('totalVolGeom').innerHTML = totalVolumeLiters.toFixed(2) + ' л (' + (totalVolumeLiters / 1000).toFixed(6) + ' м³)';
+        document.getElementById('requiredVol').innerHTML = requiredWithReserve.toFixed(2) + ' л';
+        document.getElementById('countDisplay').innerHTML = count;
+        
+        if (totalVolumeLiters === 0) {
+            document.getElementById('balloonCount').innerHTML = '0 <span style="font-size:1rem;">(нет пустот)</span>';
+        } else {
+            document.getElementById('balloonCount').innerHTML = balloons + ' <span style="font-size:1rem;">шт.</span>';
+        }
+    }
+    
+    const inputs = ['length', 'width', 'height', 'cavityCount'];
+    inputs.forEach(id => {
+        document.getElementById(id).addEventListener('input', calculate);
+    });
+    document.getElementById('calcBtn').addEventListener('click', calculate);
+    
+    calculate();
+</script>
+</body>
+</html>
