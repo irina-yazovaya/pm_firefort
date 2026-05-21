@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>FIREFORT EI240 — Калькулятор расхода огнестойкой пены</title>
+    <title>FIREFORT EI240 — Калькулятор для технологических отверстий</title>
     <style>
         * {
             box-sizing: border-box;
@@ -19,25 +19,21 @@
             padding: 20px;
         }
         .card {
-            max-width: 750px;
+            max-width: 900px;
             width: 100%;
             background: white;
             border-radius: 36px;
             box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.25);
             overflow: hidden;
-            transition: all 0.2s;
         }
         .header {
-            background: #b71c1c;
             background: linear-gradient(135deg, #b71c1c 0%, #d32f2f 100%);
             color: white;
-            padding: 28px 28px 24px;
+            padding: 28px;
         }
         .header h1 {
             margin: 0 0 6px;
             font-size: 1.7rem;
-            font-weight: 700;
-            letter-spacing: -0.3px;
         }
         .header h1 span {
             font-weight: 400;
@@ -57,79 +53,126 @@
             border-radius: 50px;
             font-size: 0.7rem;
             margin-top: 14px;
-            letter-spacing: 0.5px;
         }
         .content {
             padding: 26px 28px 32px;
         }
-        .param-group {
-            background: #f9fafc;
-            border-radius: 26px;
-            padding: 20px 22px;
-            margin-bottom: 24px;
-            border: 1px solid #e6edf4;
-        }
-        .param-title {
+        .section-title {
             font-weight: 700;
             color: #0f172a;
-            margin-bottom: 18px;
+            margin-bottom: 16px;
             font-size: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
             border-left: 4px solid #d32f2f;
             padding-left: 14px;
+        }
+        .holes-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .hole-card {
+            background: #f9fafc;
+            border-radius: 24px;
+            padding: 18px;
+            border: 1px solid #e6edf4;
+        }
+        .hole-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .hole-title {
+            font-weight: 700;
+            color: #d32f2f;
+            font-size: 0.85rem;
+            background: #fff0f0;
+            padding: 4px 12px;
+            border-radius: 30px;
+        }
+        .btn-remove {
+            background: #e2e8f0;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .btn-remove:hover {
+            background: #fecaca;
+            color: #b91c1c;
         }
         .input-row {
             display: flex;
             flex-wrap: wrap;
-            gap: 18px;
-            margin-bottom: 20px;
+            gap: 16px;
         }
         .input-field {
             flex: 1;
-            min-width: 110px;
+            min-width: 100px;
         }
         .input-field label {
             display: block;
             font-size: 0.7rem;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
             color: #5b6e8c;
             margin-bottom: 6px;
         }
         .input-field input {
             width: 100%;
-            padding: 12px 14px;
+            padding: 10px 12px;
             font-size: 1rem;
             border: 1.5px solid #dce3ec;
-            border-radius: 20px;
+            border-radius: 18px;
             background: white;
-            transition: 0.2s;
-            font-weight: 500;
         }
         .input-field input:focus {
             outline: none;
             border-color: #d32f2f;
-            box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.15);
         }
         .unit-badge {
             font-size: 0.7rem;
             color: #5f7f9e;
-            margin-top: 6px;
-            font-weight: 500;
+            margin-top: 5px;
+        }
+        .hole-volume {
+            font-size: 0.7rem;
+            color: #5b6e8c;
+            margin-top: 12px;
+            padding-top: 8px;
+            border-top: 1px dashed #e2e8f0;
+        }
+        .btn-add {
+            background: #e2e8f0;
+            border: 2px dashed #94a3b8;
+            padding: 12px;
+            width: 100%;
+            border-radius: 28px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        .btn-add:hover {
+            background: #d1dbe8;
+            border-color: #d32f2f;
+            color: #d32f2f;
         }
         .info-panel {
             background: white;
             border-radius: 22px;
-            padding: 14px 18px;
-            margin: 18px 0 20px;
+            padding: 14px;
+            margin: 18px 0;
             border: 1px solid #e2e8f0;
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
-            gap: 12px;
+            gap: 10px;
         }
         .info-item {
             flex: 1;
@@ -143,84 +186,68 @@
         }
         .info-value {
             font-weight: 800;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: #0f172a;
         }
         .result-block {
             background: #0f172a;
             border-radius: 28px;
-            padding: 22px 24px;
-            margin: 20px 0 20px;
+            padding: 20px;
+            margin: 20px 0;
             color: white;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
         }
         .result-label {
             font-size: 0.75rem;
             opacity: 0.7;
-            letter-spacing: 1px;
         }
         .result-number {
-            font-size: 3.2rem;
+            font-size: 2.8rem;
             font-weight: 800;
-            line-height: 1.1;
-            margin: 10px 0 8px;
-        }
-        .result-number small {
-            font-size: 1.2rem;
-            font-weight: 500;
+            margin: 8px 0;
         }
         .detail-line {
             display: flex;
             justify-content: space-between;
             border-top: 1px solid #1e2a44;
-            padding-top: 12px;
-            margin-top: 12px;
+            padding-top: 10px;
+            margin-top: 10px;
             font-size: 0.8rem;
+            flex-wrap: wrap;
+            gap: 8px;
         }
         .calc-btn {
             background: #d32f2f;
             border: none;
-            padding: 15px 18px;
+            padding: 14px;
             width: 100%;
             border-radius: 44px;
             font-weight: 700;
             font-size: 1rem;
             color: white;
             cursor: pointer;
-            transition: 0.2s;
-            margin: 8px 0 12px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin: 8px 0;
         }
         .calc-btn:hover {
             background: #b71c1c;
-            transform: scale(0.98);
         }
         .warning-note {
             background: #fffbeb;
             border-left: 4px solid #f59e0b;
-            padding: 12px 16px;
+            padding: 10px 14px;
             border-radius: 18px;
-            font-size: 0.72rem;
+            font-size: 0.7rem;
             color: #92400e;
-            margin-top: 20px;
-        }
-        hr {
-            margin: 20px 0 8px;
-            border: none;
-            border-top: 1px solid #e9eef3;
+            margin-top: 16px;
         }
         .footer-note {
             font-size: 0.7rem;
             text-align: center;
             color: #7e8aa2;
+            margin-top: 16px;
         }
-        @media (max-width: 550px) {
-            .content {
-                padding: 20px;
-            }
-            .result-number {
-                font-size: 2.4rem;
-            }
+        @media (max-width: 600px) {
+            .content { padding: 20px; }
+            .result-number { font-size: 2rem; }
         }
     </style>
 </head>
@@ -232,145 +259,148 @@
         <div class="brand">Предел огнестойкости EI 240 | 240 минут</div>
     </div>
     <div class="content">
-        <div class="param-group">
-            <div class="param-title">📏 Размеры ОДНОЙ полости / трещины</div>
-            <div class="input-row">
-                <div class="input-field">
-                    <label>Длина (L)</label>
-                    <input type="number" id="length" value="7000" step="1" placeholder="мм">
-                    <div class="unit-badge">мм</div>
-                </div>
-                <div class="input-field">
-                    <label>Ширина (W)</label>
-                    <input type="number" id="width" value="200" step="1" placeholder="мм">
-                    <div class="unit-badge">мм</div>
-                </div>
-                <div class="input-field">
-                    <label>Глубина (H)</label>
-                    <input type="number" id="height" value="500" step="1" placeholder="мм">
-                    <div class="unit-badge">мм</div>
-                </div>
-            </div>
-            <div class="input-row">
-                <div class="input-field">
-                    <label>🔢 Количество таких же полостей</label>
-                    <input type="number" id="cavityCount" value="1" step="1" min="1" placeholder="шт">
-                    <div class="unit-badge">штук</div>
-                </div>
-            </div>
-            <div style="font-size: 0.7rem; background:#eef2ff; padding: 6px 12px; border-radius: 30px; margin-top: 6px;">
-                💡 Введите размеры в миллиметрах (мм). 1 м = 1000 мм
-            </div>
-        </div>
+        <div class="section-title">🕳️ Технологические отверстия</div>
+        
+        <div id="holesContainer" class="holes-container"></div>
+        
+        <button class="btn-add" id="addHoleBtn">+ Добавить технологическое отверстие</button>
 
         <div class="info-panel">
-            <div class="info-item">
-                <div class="info-label">📦 Баллон</div>
-                <div class="info-value">750 мл</div>
-            </div>
-            <div class="info-item">
-                <div class="info-label">💨 Выход пены</div>
-                <div class="info-value">45 литров</div>
-            </div>
-            <div class="info-item">
-                <div class="info-label">⚙️ Техпотери</div>
-                <div class="info-value">5%</div>
-            </div>
-            <div class="info-item">
-                <div class="info-label">🛡️ Запас</div>
-                <div class="info-value">15%</div>
-            </div>
+            <div class="info-item"><div class="info-label">📦 Баллон</div><div class="info-value">750 мл</div></div>
+            <div class="info-item"><div class="info-label">💨 Выход пены</div><div class="info-value">45 л</div></div>
+            <div class="info-item"><div class="info-label">⚙️ Техпотери</div><div class="info-value">5%</div></div>
+            <div class="info-item"><div class="info-label">🛡️ Запас</div><div class="info-value">15%</div></div>
         </div>
 
         <div class="result-block">
-            <div class="result-label">🧨 ТРЕБУЕТСЯ БАЛЛОНОВ FIREFORT EI240</div>
-            <div class="result-number" id="balloonCount">—</div>
+            <div class="result-label">🧨 ВСЕГО БАЛЛОНОВ FIREFORT EI240</div>
+            <div class="result-number" id="balloonCount">0</div>
             <div class="detail-line">
-                <span>📐 Объём 1 полости:</span>
-                <span id="singleVol">—</span>
+                <span>📊 Суммарный объём всех отверстий:</span>
+                <span id="totalVolumeAll">0 л</span>
             </div>
             <div class="detail-line">
-                <span>🔢 Суммарный объём (всех <span id="countDisplay">—</span> полостей):</span>
-                <span id="totalVolGeom">—</span>
+                <span>➕ Пены с запасом (5% + 15%):</span>
+                <span id="requiredVolAll">0 л</span>
             </div>
             <div class="detail-line">
-                <span>➕ Пены с запасом (тех.5% + резерв15%):</span>
-                <span id="requiredVol">—</span>
-            </div>
-            <div class="detail-line">
-                <span>🧴 Полезный выход 1 баллона (с учётом 5% потерь):</span>
-                <span>42,75 литра</span>
+                <span>🧴 Полезный выход 1 баллона:</span>
+                <span>42,75 л</span>
             </div>
         </div>
 
-        <button class="calc-btn" id="calcBtn">⟳ РАССЧИТАТЬ</button>
+        <button class="calc-btn" id="calcBtn">⟳ ПЕРЕСЧИТАТЬ</button>
 
         <div class="warning-note">
-            🔥 <strong>FIREFORT EI240</strong> — огнестойкая пена с пределом огнестойкости 240 минут. <br>
-            Расчёт выполнен: выход готовой пены 45 л/баллон, технические потери 5%, эксплуатационный запас 15%. Округление до целого баллона вверх.
+            🔥 <strong>FIREFORT EI240</strong> — огнестойкая пена с пределом огнестойкости 240 минут.<br>
+            Добавьте несколько технологических отверстий с разными размерами. Размеры в миллиметрах.
         </div>
-        <hr>
-        <div class="footer-note">
-            Формула: N = ceil( V<sub>сумм</sub> (литры) × 1,15 / 42,75 )
-        </div>
+        <div class="footer-note">Формула: N = ceil( V<sub>сумм</sub> (л) × 1,15 / 42,75 )</div>
     </div>
 </div>
 
 <script>
-    const OUTPUT_LITERS_PER_CAN = 45;
-    const TECH_LOSS_PERCENT = 0.05;
+    const USABLE_LITERS_PER_CAN = 45 * 0.95;
     const EXTRA_RESERVE = 0.15;
-    const USABLE_LITERS_PER_CAN = OUTPUT_LITERS_PER_CAN * (1 - TECH_LOSS_PERCENT);
+    
+    let nextId = 0;
+    let holes = [];
 
-    function calculate() {
-        let L_mm = parseFloat(document.getElementById('length').value) || 0;
-        let W_mm = parseFloat(document.getElementById('width').value) || 0;
-        let H_mm = parseFloat(document.getElementById('height').value) || 0;
-        let count = parseInt(document.getElementById('cavityCount').value) || 1;
-
-        if (count < 1) count = 1;
-        L_mm = Math.max(0, L_mm);
-        W_mm = Math.max(0, W_mm);
-        H_mm = Math.max(0, H_mm);
-
-        const L_m = L_mm / 1000;
-        const W_m = W_mm / 1000;
-        const H_m = H_mm / 1000;
-
-        const volumeSingleM3 = L_m * W_m * H_m;
-        const volumeSingleLiters = volumeSingleM3 * 1000;
-        const totalVolumeLiters = volumeSingleLiters * count;
-        const requiredWithReserve = totalVolumeLiters * (1 + EXTRA_RESERVE);
-
-        let balloons = 0;
-        if (requiredWithReserve > 0 && USABLE_LITERS_PER_CAN > 0) {
-            balloons = Math.ceil(requiredWithReserve / USABLE_LITERS_PER_CAN);
-        }
-
-        function formatLiters(liters) {
-            if (liters < 0.01) return liters.toFixed(4) + ' л';
-            if (liters < 1) return liters.toFixed(3) + ' л';
-            if (liters < 100) return liters.toFixed(1) + ' л';
-            return Math.round(liters) + ' л';
-        }
-
-        document.getElementById('singleVol').innerHTML = formatLiters(volumeSingleLiters) + ' (' + volumeSingleM3.toFixed(5) + ' м³)';
-        document.getElementById('totalVolGeom').innerHTML = formatLiters(totalVolumeLiters) + ' (' + (totalVolumeLiters / 1000).toFixed(5) + ' м³)';
-        document.getElementById('requiredVol').innerHTML = formatLiters(requiredWithReserve);
-        document.getElementById('countDisplay').innerHTML = count;
-
-        if (totalVolumeLiters === 0) {
-            document.getElementById('balloonCount').innerHTML = '0 <small>шт.</small>';
-        } else {
-            document.getElementById('balloonCount').innerHTML = balloons + ' <small>баллонов</small>';
-        }
+    function formatLiters(liters) {
+        if (liters < 0.01) return liters.toFixed(4) + ' л';
+        if (liters < 1) return liters.toFixed(3) + ' л';
+        if (liters < 100) return liters.toFixed(1) + ' л';
+        return Math.round(liters) + ' л';
     }
 
-    ['length', 'width', 'height', 'cavityCount'].forEach(id => {
-        document.getElementById(id).addEventListener('input', calculate);
-    });
-    document.getElementById('calcBtn').addEventListener('click', calculate);
-    calculate();
+    function calcVolume(Lmm, Wmm, Hmm) {
+        return (Lmm / 1000) * (Wmm / 1000) * (Hmm / 1000) * 1000;
+    }
+
+    function updateTotal() {
+        let totalLiters = 0;
+        
+        for (let i = 0; i < holes.length; i++) {
+            const h = holes[i];
+            const L = parseFloat(document.getElementById(`len_${h.id}`)?.value) || 0;
+            const W = parseFloat(document.getElementById(`wid_${h.id}`)?.value) || 0;
+            const H = parseFloat(document.getElementById(`hei_${h.id}`)?.value) || 0;
+            
+            h.L = L; h.W = W; h.H = H;
+            const vol = calcVolume(L, W, H);
+            h.volume = vol;
+            totalLiters += vol;
+            
+            const volSpan = document.getElementById(`vol_${h.id}`);
+            if (volSpan) volSpan.innerHTML = formatLiters(vol);
+        }
+        
+        const required = totalLiters * (1 + EXTRA_RESERVE);
+        const balloons = required > 0 ? Math.ceil(required / USABLE_LITERS_PER_CAN) : 0;
+        
+        document.getElementById('totalVolumeAll').innerHTML = formatLiters(totalLiters) + ' (' + (totalLiters/1000).toFixed(4) + ' м³)';
+        document.getElementById('requiredVolAll').innerHTML = formatLiters(required);
+        document.getElementById('balloonCount').innerHTML = balloons + ' <small>шт.</small>';
+    }
+
+    function addHole(Lval = 0, Wval = 0, Hval = 0) {
+        const id = nextId++;
+        const holeDiv = document.createElement('div');
+        holeDiv.className = 'hole-card';
+        holeDiv.id = `hole_${id}`;
+        holeDiv.innerHTML = `
+            <div class="hole-header">
+                <span class="hole-title">🕳️ Отверстие ${id + 1}</span>
+                <button class="btn-remove" data-id="${id}">🗑 Удалить</button>
+            </div>
+            <div class="input-row">
+                <div class="input-field">
+                    <label>Длина (L)</label>
+                    <input type="number" id="len_${id}" value="${Lval}" step="1" placeholder="мм">
+                    <div class="unit-badge">мм</div>
+                </div>
+                <div class="input-field">
+                    <label>Ширина (W)</label>
+                    <input type="number" id="wid_${id}" value="${Wval}" step="1" placeholder="мм">
+                    <div class="unit-badge">мм</div>
+                </div>
+                <div class="input-field">
+                    <label>Глубина (H)</label>
+                    <input type="number" id="hei_${id}" value="${Hval}" step="1" placeholder="мм">
+                    <div class="unit-badge">мм</div>
+                </div>
+            </div>
+            <div class="hole-volume">
+                📦 Объём отверстия: <span id="vol_${id}">0 л</span>
+            </div>
+        `;
+        
+        document.getElementById('holesContainer').appendChild(holeDiv);
+        
+        holes.push({ id, L: Lval, W: Wval, H: Hval, volume: 0 });
+        
+        const removeBtn = holeDiv.querySelector('.btn-remove');
+        removeBtn.addEventListener('click', () => removeHole(id));
+        
+        const inputs = holeDiv.querySelectorAll('input');
+        inputs.forEach(inp => inp.addEventListener('input', () => updateTotal()));
+        
+        updateTotal();
+    }
+
+    function removeHole(id) {
+        const index = holes.findIndex(h => h.id === id);
+        if (index !== -1) holes.splice(index, 1);
+        const el = document.getElementById(`hole_${id}`);
+        if (el) el.remove();
+        updateTotal();
+    }
+
+    document.getElementById('addHoleBtn').addEventListener('click', () => addHole(0, 0, 0));
+    document.getElementById('calcBtn').addEventListener('click', () => updateTotal());
+    
+    // Стартовое отверстие с примером
+    addHole(7000, 200, 500);
 </script>
 </body>
 </html>
