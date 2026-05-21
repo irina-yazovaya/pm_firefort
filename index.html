@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>FIREFORT EI240 — Калькулятор для технологических отверстий</title>
+    <title>Огнестойкая профессиональная пена FIREFORT EI240 — Калькулятор расхода</title>
     <style>
         * {
             box-sizing: border-box;
@@ -33,11 +33,11 @@
         }
         .header h1 {
             margin: 0 0 6px;
-            font-size: 1.7rem;
+            font-size: 1.5rem;
         }
         .header h1 span {
             font-weight: 400;
-            font-size: 1.3rem;
+            font-size: 1.2rem;
         }
         .header p {
             margin: 8px 0 0;
@@ -110,6 +110,7 @@
             display: flex;
             flex-wrap: wrap;
             gap: 16px;
+            margin-bottom: 12px;
         }
         .input-field {
             flex: 1;
@@ -245,6 +246,14 @@
             color: #7e8aa2;
             margin-top: 16px;
         }
+        .hint {
+            background: #eef2ff;
+            padding: 6px 12px;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            margin-bottom: 16px;
+            color: #1e40af;
+        }
         @media (max-width: 600px) {
             .content { padding: 20px; }
             .result-number { font-size: 2rem; }
@@ -254,16 +263,20 @@
 <body>
 <div class="card">
     <div class="header">
-        <h1>🔥 FIREFORT <span>EI240</span></h1>
-        <p>Огнестойкая профессиональная монтажная пена</p>
-        <div class="brand">Предел огнестойкости EI 240 | 240 минут</div>
+        <h1>🔥 Огнестойкая профессиональная пена<br>FIREFORT <span>EI240</span></h1>
+        <p>Предел огнестойкости EI 240 | 240 минут</p>
+        <div class="brand">Огнестойкость до 240 минут</div>
     </div>
     <div class="content">
         <div class="section-title">🕳️ Технологические отверстия</div>
         
+        <div class="hint">
+            💡 Подсказка: 1 м = 1000 мм. Вводите размеры в миллиметрах (мм).
+        </div>
+        
         <div id="holesContainer" class="holes-container"></div>
         
-        <button class="btn-add" id="addHoleBtn">+ Добавить технологическое отверстие</button>
+        <button class="btn-add" id="addHoleBtn">+ Добавить типоразмер отверстия</button>
 
         <div class="info-panel">
             <div class="info-item"><div class="info-label">📦 Баллон</div><div class="info-value">750 мл</div></div>
@@ -273,7 +286,7 @@
         </div>
 
         <div class="result-block">
-            <div class="result-label">🧨 ВСЕГО БАЛЛОНОВ FIREFORT EI240</div>
+            <div class="result-label">🧨 ВСЕГО БАЛЛОНОВ (огнестойкая профессиональная пена FIREFORT)</div>
             <div class="result-number" id="balloonCount">0</div>
             <div class="detail-line">
                 <span>📊 Суммарный объём всех отверстий:</span>
@@ -284,7 +297,7 @@
                 <span id="requiredVolAll">0 л</span>
             </div>
             <div class="detail-line">
-                <span>🧴 Полезный выход 1 баллона:</span>
+                <span>🧴 Полезный выход 1 баллона (с учётом 5% потерь):</span>
                 <span>42,75 л</span>
             </div>
         </div>
@@ -292,15 +305,15 @@
         <button class="calc-btn" id="calcBtn">⟳ ПЕРЕСЧИТАТЬ</button>
 
         <div class="warning-note">
-            🔥 <strong>FIREFORT EI240</strong> — огнестойкая пена с пределом огнестойкости 240 минут.<br>
-            Добавьте несколько технологических отверстий с разными размерами. Размеры в миллиметрах.
+            🔥 <strong>Огнестойкая профессиональная пена FIREFORT EI240</strong> — предел огнестойкости 240 минут.<br>
+            Добавьте несколько типоразмеров технологических отверстий. Для каждого укажите размеры и количество одинаковых отверстий.
         </div>
         <div class="footer-note">Формула: N = ceil( V<sub>сумм</sub> (л) × 1,15 / 42,75 )</div>
     </div>
 </div>
 
 <script>
-    const USABLE_LITERS_PER_CAN = 45 * 0.95;
+    const USABLE_LITERS_PER_CAN = 45 * 0.95;  // 42,75 л
     const EXTRA_RESERVE = 0.15;
     
     let nextId = 0;
@@ -325,14 +338,22 @@
             const L = parseFloat(document.getElementById(`len_${h.id}`)?.value) || 0;
             const W = parseFloat(document.getElementById(`wid_${h.id}`)?.value) || 0;
             const H = parseFloat(document.getElementById(`hei_${h.id}`)?.value) || 0;
+            const count = parseInt(document.getElementById(`cnt_${h.id}`)?.value) || 1;
             
-            h.L = L; h.W = W; h.H = H;
-            const vol = calcVolume(L, W, H);
-            h.volume = vol;
-            totalLiters += vol;
+            h.L = L;
+            h.W = W;
+            h.H = H;
+            h.count = Math.max(1, count);
+            
+            const volOne = calcVolume(L, W, H);
+            const volTotal = volOne * h.count;
+            h.volumeTotal = volTotal;
+            totalLiters += volTotal;
             
             const volSpan = document.getElementById(`vol_${h.id}`);
-            if (volSpan) volSpan.innerHTML = formatLiters(vol);
+            if (volSpan) {
+                volSpan.innerHTML = `${formatLiters(volOne)} × ${h.count} шт = ${formatLiters(volTotal)}`;
+            }
         }
         
         const required = totalLiters * (1 + EXTRA_RESERVE);
@@ -343,14 +364,14 @@
         document.getElementById('balloonCount').innerHTML = balloons + ' <small>шт.</small>';
     }
 
-    function addHole(Lval = 0, Wval = 0, Hval = 0) {
+    function addHole(Lval = 0, Wval = 0, Hval = 0, countVal = 1) {
         const id = nextId++;
         const holeDiv = document.createElement('div');
         holeDiv.className = 'hole-card';
         holeDiv.id = `hole_${id}`;
         holeDiv.innerHTML = `
             <div class="hole-header">
-                <span class="hole-title">🕳️ Отверстие ${id + 1}</span>
+                <span class="hole-title">🕳️ Типоразмер отверстия ${id + 1}</span>
                 <button class="btn-remove" data-id="${id}">🗑 Удалить</button>
             </div>
             <div class="input-row">
@@ -370,14 +391,21 @@
                     <div class="unit-badge">мм</div>
                 </div>
             </div>
+            <div class="input-row">
+                <div class="input-field">
+                    <label>🔢 Количество таких же отверстий</label>
+                    <input type="number" id="cnt_${id}" value="${countVal}" step="1" min="1" placeholder="шт">
+                    <div class="unit-badge">штук</div>
+                </div>
+            </div>
             <div class="hole-volume">
-                📦 Объём отверстия: <span id="vol_${id}">0 л</span>
+                📦 Объём: <span id="vol_${id}">0 л</span>
             </div>
         `;
         
         document.getElementById('holesContainer').appendChild(holeDiv);
         
-        holes.push({ id, L: Lval, W: Wval, H: Hval, volume: 0 });
+        holes.push({ id, L: Lval, W: Wval, H: Hval, count: countVal, volumeTotal: 0 });
         
         const removeBtn = holeDiv.querySelector('.btn-remove');
         removeBtn.addEventListener('click', () => removeHole(id));
@@ -396,11 +424,11 @@
         updateTotal();
     }
 
-    document.getElementById('addHoleBtn').addEventListener('click', () => addHole(0, 0, 0));
+    document.getElementById('addHoleBtn').addEventListener('click', () => addHole(0, 0, 0, 1));
     document.getElementById('calcBtn').addEventListener('click', () => updateTotal());
     
-    // Стартовое отверстие с примером
-    addHole(7000, 200, 500);
+    // Стартовый пример: 1 отверстие 7000×200×500 мм
+    addHole(7000, 200, 500, 1);
 </script>
 </body>
 </html>
